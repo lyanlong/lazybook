@@ -11,8 +11,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Bootstrap\Core\LazyRoute::get('/', 'Entry@loginForm');
-Bootstrap\Core\LazyRoute::get('/login', 'Entry@loginForm');
-Bootstrap\Core\LazyRoute::post('/login', 'Entry@login');
-Bootstrap\Core\LazyRoute::get('/logout', 'Entry@logout');
+Bootstrap\Core\LazyRoute::get('/', 'Frant/index@index');
+Bootstrap\Core\LazyRoute::get('/login', 'Admin/Entry@loginForm');
+Bootstrap\Core\LazyRoute::post('/login', 'Admin/Entry@login');
+Bootstrap\Core\LazyRoute::get('/logout', 'Admin/Entry@logout');
 

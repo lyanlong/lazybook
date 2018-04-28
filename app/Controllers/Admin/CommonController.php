@@ -6,7 +6,7 @@
  * Time: 18:26
  */
 
-namespace App\Controllers;
+namespace App\Controllers\Admin;
 
 
 use Bootstrap\Core\LazyController;

@@ -6,7 +6,7 @@
  * Time: 15:51
  */
 
-namespace App\Controllers;
+namespace App\Controllers\Admin;
 
 
 use Bootstrap\Core\LazyFake;
@@ -15,7 +15,7 @@ use Bootstrap\Core\LazySession;
 class IndexController extends CommonController
 {
     public function index(){
-        return $this->view('index.index');
+        return $this->view('admin.index.index');
     }
 
 }

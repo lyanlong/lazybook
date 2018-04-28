@@ -12,6 +12,7 @@ namespace Bootstrap\Core;
 
 class LazyRequest
 {
+    protected static $model = null;
     protected static $controller = null;
     protected static $action = null;
     protected static $data = null;
@@ -22,16 +23,20 @@ class LazyRequest
     public static function router($url, array $post)
     {
 //        LazyLog::log('debug.log', 'LazyRequest.router.url:'.$url);
-        $http_method = strtolower(http_method());
+        $http_method = strtolower(\Bootstrap\http_method());
         if (isset(LazyRoute::$router[$http_method][$url])) {
-            $urlinfo = explode('@', LazyRoute::$router[$http_method][$url]);
+            @list($model, $controllerAction) = explode('/', str_replace('\\', '/', LazyRoute::$router[$http_method][$url]));
+            @list($controlle, $action) = explode('@', $controllerAction);
+            $urlinfo = [$model, $controlle, $action];
         } else {
             $urlinfo = explode('/', trim($url, '/'));
         }
 //        LazyLog::log('debug.log', 'LazyRequest.router.urlinfo:'.json_encode($urlinfo));
-        self::$controller = (isset($urlinfo[0]) and $urlinfo[0]) ? $urlinfo[0] : 'index';
-        self::$action = (isset($urlinfo[1]) and $urlinfo[1]) ? $urlinfo[1] : 'index';
-        self::$data['get'] = self::parseGetData(array_slice($urlinfo, 2));
+        self::$url = $url;
+        self::$model = (isset($urlinfo[0]) and $urlinfo[0]) ? $urlinfo[0] : 'frant';
+        self::$controller = (isset($urlinfo[1]) and $urlinfo[1]) ? $urlinfo[1] : 'index';
+        self::$action = (isset($urlinfo[2]) and $urlinfo[2]) ? $urlinfo[2] : 'index';
+        self::$data['get'] = self::parseGetData(array_slice($urlinfo, 3));
         self::$data['post'] = $post;
 
         self::dispatch();
@@ -39,8 +44,8 @@ class LazyRequest
 
     public static function dispatch()
     {
-        LazyLog::log('request_' . date('Y-m-d') . '.log', [self::$url => [self::$controller, self::$action, self::$data]]);
-        $controller = 'App\Controllers\\' . ucfirst(self::$controller) . 'Controller';
+        LazyLog::log('request_' . date('Y-m-d') . '.log', [self::$url => [self::$model,self::$controller, self::$action, self::$data]]);
+        $controller = 'App\Controllers\\' . ucfirst(self::$model.'\\'.self::$controller) . 'Controller';
 //        LazyLog::log('debug.log', 'LazyRequest.dispatch.urlinfo:'.$controller.'|'.strtolower(self::$action));
         self::response(call_user_func_array([new $controller, strtolower(self::$action)], [new self()]));
     }
