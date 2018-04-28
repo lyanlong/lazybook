@@ -1,0 +1,65 @@
+#!/usr/bin/env php
+<?php
+/**
+ * make 命令入口文件
+ * Created by PhpStorm.
+ * User: liyanlong
+ * Date: 2018/4/27 0027
+ * Time: 19:47
+ */
+date_default_timezone_set('Asia/Chongqing');
+
+define('ROOT',  dirname(dirname(__FILE__)));
+define('DS', DIRECTORY_SEPARATOR);
+define('APP_PATH', ROOT . DS . 'app');
+define('BOOT_PATH', ROOT.DS.'bootstrap');
+define('CONFIG_PATH', ROOT . DS . 'config');
+define('SCRIPT_EXT', 'php');
+define('DB_PREX', 'lazybook_');
+define('TEMPLATE_EXT', 'lazy.php');
+
+require BOOT_PATH.DS.'helps.php';
+
+
+function autoload_cli_file($class)
+{
+    $classFile = ROOT. DS. $class . '.' . SCRIPT_EXT;
+    if (file_exists($classFile)) {
+        require_once $classFile;
+    }
+}
+spl_autoload_register('autoload_cli_file');
+
+if(!\Bootstrap\is_cli()){
+    exit('error');
+}
+
+$clilist = [
+    'make:controller'   =>  '',
+    'make:view'   =>  '',
+    'make:model'   =>  '',
+    'make:table'   =>  '',
+];
+
+if($argc < 3){
+    exit(print_r(array_keys($clilist)));
+}
+
+list(, $cli, $ag) = $argv;
+$class = 'bootstrap\\command\\'.ucwords(str_replace(':', '', $cli));
+
+
+$response = call_user_func_array([$class, 'run'], [$ag]);
+while(!$response['status']){
+    print_r("{$cli} {$ag} failed!\n");
+    print_r("{$response['msg']}");
+    $stdin  =   fopen('php://stdin', 'r'); 
+    $input  =   trim(fgets($stdin)); //获取命令行输入数据流
+    if('Y' == strtoupper($input)){
+        $response = call_user_func_array([$class, 'run'], [$ag, true]);
+    }else{
+        exit(0);
+    }
+}
+exit("{$cli} {$ag} successd");
+

@@ -1,0 +1,56 @@
+#!/usr/bin/env php
+<?php
+/**
+ * 生产测试数据入口文件
+ * Created by PhpStorm.
+ * User: liyanlong
+ * Date: 2018/4/27 0027
+ * Time: 19:47
+ */
+date_default_timezone_set('Asia/Chongqing');
+
+define('DS', DIRECTORY_SEPARATOR);
+define('ROOT',  dirname(dirname(__FILE__)));
+define('BOOT_PATH', ROOT.DS.'bootstrap');
+define('CONFIG_PATH', ROOT . DS . 'config');
+define('SCRIPT_EXT', 'php');
+require BOOT_PATH.DS.'helps.php';
+
+
+function autoload_cli_file($class)
+{
+//    print_r($class);//Bootstrap\Core\Lazyrouter
+    $classFile = ROOT. DS. $class . '.' . SCRIPT_EXT;
+    if (file_exists($classFile)) {
+        require_once $classFile;
+    }
+}
+spl_autoload_register('autoload_cli_file');
+
+if(!\Bootstrap\is_cli()){
+    exit('error');
+}
+
+$insert_num = 5;
+$insert_fileds = ['name' => '|8', 'email' => 'email|10', 'password' => 'md5|test', 'created_at' => 'timestamp', 'updated_at' => 'timestamp'];
+$insert_table = 'lazybook_users';
+
+$data = \Bootstrap\Core\LazyFake::run($insert_num,$insert_fileds);
+
+
+if($data){
+    $mysql_fields = '(`'. implode('`,`', array_keys($insert_fileds)). '`)';
+    $mysql_data = [];
+    foreach ($data as $value){
+        $mysql_data[] = "('".implode("','", array_values($value))."')";
+    }
+    $sql = "insert into `{$insert_table}` {$mysql_fields} values ". implode(',', $mysql_data);
+    $db_config = \Bootstrap\db_config('default');
+    if($num = \Bootstrap\Core\LazyModel::getInstance($db_config['dsn'], $db_config['db_user'], $db_config['db_pwd'])->exec($sql)){
+        print_r($data);
+        exit("add {$num} line data success");
+    }else{
+        exit('add fail');
+    }
+}
+

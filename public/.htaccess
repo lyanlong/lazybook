@@ -1,0 +1,30 @@
+#redirect all calls to the public folder
+
+#<IfModule mod_rewrite.c>
+#    RewriteEngine on
+#    RewriteRule    ^$    public/    [L]
+#    RewriteRule    (.*) public/$1    [L]
+# </IfModule>
+#----------------------------------------------
+
+
+<IfModule mod_rewrite.c>
+# 开启URL重写
+RewriteEngine On
+
+# 满足怎样的条件( {REQUEST_FILENAME} 是一个 apache 变量，需要用 % 来指示 )
+ #如果文件存在就直接访问文件不进行RewriteRule
+RewriteCond %{REQUEST_FILENAME} !-f
+ #如果目录存在就直接访问目录不进行RewriteRule
+RewriteCond %{REQUEST_FILENAME} !-d
+
+#    [NC](no case)表示忽略大小写
+#    [L](last)：终止一系列的RewriteCond和RewriteRule
+#    [R](redirect)：触发一个显示的跳转，也可以指定跳转类型，如[R=301]
+#    [F](forbidden)：禁止查看特定文件，apache会触发403错误
+
+# 应用怎样的规则
+# 将所有其他URL重写到 index.php/URL
+RewriteRule ^(.*)$ index.php?url=$1 [PT,L]
+
+</IfModule>
