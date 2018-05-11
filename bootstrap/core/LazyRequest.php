@@ -75,10 +75,10 @@ class LazyRequest
     }
 
 
-    public function input($name = '')
+    public function input($name = '', $default = '')
     {
         if ($name) {
-            $result = self::$data['post'][$name] ?? (self::$data['get'][$name] ?? '');
+            $result = self::$data['post'][$name] ?? (self::$data['get'][$name] ?? $default);
         } else {
             $result = array_merge(self::$data['post'], self::$data['get']);
         }

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Lazybook</title>
+    <link rel="icon" href="/img/frant.ico" type="image/x-icon"/>
+    <link rel="shortcut icon" href="/img/frant.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link href="http://www.jq22.com/jquery/font-awesome.4.6.0.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="/css/sidebar-menu.css">
+    <link rel="stylesheet" href="/css/lazybook.css">
+</head>
+<body>
+
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="frant-top">
+    <a class="navbar-brand" href="#"><b>Lazy</b>book</a>
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Link</a>
+        </li>
+    </ul>
+</nav>
+
+<div id="frant-main">
+    <div class="main-sidebar">
+        <div id="div_menu" class="sidebar">
+        </div>
+    </div>
+    <div id="frant-dir-content">
+
+    </div>
+    <div id="frant-main-content">
+
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <p id="frant-bottom">
+        <a href="entry/contactme" target="_blank">联系管理员</a>
+    </p>
+</nav>
+
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/sidebar-menu.js"></script>
+<script src="/js/lazybook.js"></script>
+</body>
+</html>

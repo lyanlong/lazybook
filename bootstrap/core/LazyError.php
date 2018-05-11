@@ -8,10 +8,11 @@
 
 namespace Bootstrap\Core;
 
-
+use Bootstrap\Core\LazyException;
+use Bootstrap\Core\LazyLog;
 class LazyError
 {
-    protected static $dir = STORAGE_PATH.DS.'logs'.DS.'errors';
+    protected static $dir = 'errors';
     
     public static function register()
     {
@@ -21,11 +22,12 @@ class LazyError
     
     public static function appError($errno, $errstr, $errfile, $errline, $errcontext)
     {
-        echo 'lazyException ourred: '.$errstr;
+        echo 'lazyError ourred: '.$errstr;
+        self::log('lazyError ourred: '.$errstr);
     }
 
     public static function log($data)
     {
-        file_put_contents(self::$dir. DS. date('Y-m-d') . '.log', is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);
+        LazyLog::log(self::$dir. DS. date('Y-m-d') . '.log', $data);
     }
 }

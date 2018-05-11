@@ -19,8 +19,18 @@ class CommonController extends LazyController
     {
         if(!LazySession::getValue('email')){
             LazyLog::log('debug.log', 'Common.redirect:login');
-            return $this->redirect('/login');
+            return $this->redirect('/adminlogin');
         }
+    }
+
+    public function ajaxReturn($status = false, $msg = '', $extends = [])
+    {
+        $res = [
+            'status'    => $status,
+            'data'  =>  $msg
+        ];
+        $extends && $res = array_merge($res, $extends);
+        return json_encode($res);
     }
 
 }

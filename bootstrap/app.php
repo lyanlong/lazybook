@@ -8,8 +8,10 @@
 define('VENDER_PATH', ROOT . DS . 'vender');
 define('CONFIG_PATH', ROOT . DS . 'config');
 define('APP_PATH', ROOT . DS . 'app');
-define('STORAGE_PATH', ROOT . DS . 'storage');
+define('STORAGE_PATH', ROOT . DS . 'public'. DS.'storage');
 define('ROUTE_PATH', ROOT . DS . 'routes');
+define('CACHE_TIME', 0 * 60);
+define('IS_WIN', strpos(PHP_OS, 'WIN') !== false); //true => windows os
 require_once 'helps.php';
 
 function setReporting($debug = false, $error_log){
@@ -32,23 +34,23 @@ function autoload_class_file($class)
     }
 }
 
+//ini_set('display_errors',DEVELOPMENT_ENV ? 'On' : 'Off');
 // 1.错误设置
 setReporting(DEVELOPMENT_ENV, STORAGE_PATH.DS.'logs'.DS.'error_'.date('Y-m-d').'.log');
 
 //2.自动加载
 spl_autoload_register('autoload_class_file');
 
-//3. 设置错误处理
-//\Bootstrap\Core\LazyError::register();
-
-//4. 设置异常处理
+//3. 设置异常处理
 //\Bootstrap\Core\LazyException::register();
 //set_exception_handler('auto_exception');
+
+//4. 设置错误处理
+//\Bootstrap\Core\LazyError::register();
 
 //5.开启session
 \Bootstrap\Core\LazySession::initSession();
 
 require_once ROUTE_PATH.DS.'web.php';
-
 //路由转发
 call_user_func_array(['Bootstrap\Core\LazyRequest', 'router'], [$_GET['url'] ?? '', $_POST]);

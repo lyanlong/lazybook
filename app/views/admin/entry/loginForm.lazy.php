@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>lazyBook</title>
-    <link rel="icon" href="/img/favicon.ico" type="image/x-icon" />
-    <link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon" />
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="/img/admin.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/img/admin.ico" type="image/x-icon" />
+    <link href="/css/bootstrap4.min.css" rel="stylesheet">
     <link href="/css/singin.css" rel="stylesheet">
 </head>
 <body>
@@ -44,7 +44,7 @@
                 var that = this;
                 $.ajax({
                     type:"POST",
-                    url:"login",
+                    url:"adminlogin",
                     dataType:"json",
                     data: {email: that.email, password: that.password, remember: that.remember},
                     success: function(result) {
@@ -52,7 +52,7 @@
                         if(result.status){
                             window.location.href = result.url;
                         }else{
-                            alert('登录失败');
+                            alert(result.msg);
                         }
                     }
                 })

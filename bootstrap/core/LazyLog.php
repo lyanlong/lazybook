@@ -15,7 +15,7 @@ class LazyLog
     
     public static function log($filename, $data, $append = true)
     {
-        $filename or $filename = date('Y-m-d').'_lazy_log';
+        $filename or $filename = date('Y-m-d').'_lazybook.log';
         $file = self::$dir.DS.$filename;
         $content = '[ '.date('Y-m-d H:i:s').' ] '.(is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE));
         if($append){

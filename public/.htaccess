@@ -23,7 +23,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 #    [R](redirect)：触发一个显示的跳转，也可以指定跳转类型，如[R=301]
 #    [F](forbidden)：禁止查看特定文件，apache会触发403错误
 
-# 应用怎样的规则
+# 应用怎样的规则2
 # 将所有其他URL重写到 index.php/URL
 RewriteRule ^(.*)$ index.php?url=$1 [PT,L]
 

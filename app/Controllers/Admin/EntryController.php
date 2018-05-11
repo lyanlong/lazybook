@@ -25,22 +25,28 @@ class EntryController extends LazyController
     {
         $email = $request->input('email');
         $password = $request->input('password');
-        if($email == 'test@gmail.com' && $password == 'test'){
-            LazySession::mutiSet([
-                ['key' => 'email', 'value' => $email, 'expired' => 20 * 60],
-                ['key' => 'password', 'value' => $password, 'expired' => 20 * 60],
-                ['key' => 'test', 'value' => 'nerver expired', 'expired' => -1],
-            ]);
-            exit(json_encode(['status' => true, 'url' => '/admin/index/index']));
+        $model = new Users();
+        if($model->hasOne(["name = '{$email}'"])){
+            $roleinfo = $model->getOne(['*'], ["name = '{$email}'"]);
+            if(md5($password) == $roleinfo[0]['password']){
+                LazySession::mutiSet([
+                    ['key' => 'email', 'value' => $email, 'expired' => 12 * 60 * 60],
+                    ['key' => 'password', 'value' => $password, 'expired' => 12 * 60 * 60],
+                    ['key' => 'test', 'value' => 'nerver expired', 'expired' => -1],
+                ]);
+                exit(json_encode(['status' => true, 'url' => '/admin/index/index']));
+            }else{
+                exit(json_encode(['status' => false, 'msg' => '用户名或密码错误']));
+            }
         }else{
-            exit(json_encode(['status' => false]));
+            exit(json_encode(['status' => false, 'msg' => '用户不存在']));
         }
     }
     
     public function logout()
     {
         LazySession::clear();
-        return $this->redirect('/login');
+        return $this->redirect('/adminlogin');
     }
 
 }

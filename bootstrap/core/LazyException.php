@@ -11,7 +11,7 @@ namespace Bootstrap\Core;
 
 class LazyException
 {
-    protected static $dir = STORAGE_PATH.DS.'logs'.DS.'exceptions';
+    protected static $dir = 'exceptions';
     
     public static function register()
     {
@@ -22,11 +22,12 @@ class LazyException
     public static function appError(\Throwable $e)
     {
         echo 'lazyException ourred: '.$e->getMessage();
+        self::log($e->getMessage());
     }
     
     public static function log($data)
     {
-        file_put_contents(self::$dir. DS. date('Y-m-d') . '.log', is_string($data) ? $data : json_encode($data, JSON_UNESCAPED_UNICODE).PHP_EOL, FILE_APPEND);
+        LazyLog::log(self::$dir. DS. date('Y-m-d') . '.log', $data);
     }
 
 }

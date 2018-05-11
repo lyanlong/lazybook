@@ -12,6 +12,7 @@ return [
         'db_name' => 'lazybook',
         'db_user' => 'root',
         'db_pwd'  => 'root',
+        'db_charset' => 'utf8', //注意这里不能填 utf-8
         'dsn'     => 'mysql:host=localhost;dbname=lazybook',
     ],
     

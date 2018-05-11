@@ -9,13 +9,26 @@
 namespace App\Controllers\Admin;
 
 
+use App\Models\FTools;
 use Bootstrap\Core\LazyFake;
 use Bootstrap\Core\LazySession;
+use App\Models\Menus;
 
 class IndexController extends CommonController
 {
     public function index(){
-        return $this->view('admin.index.index');
+        $data = [
+            'admin' => LazySession::getValue('email'), 
+            'time' => date('A') == 'AM' ? '上午' : '下午' .date('g:i:s'),
+            'toollist'  => (new FTools())->getTools(),
+        ];
+        
+        return $this->view('admin.index.index', $data);
+    }
+
+    public function menuTree(){
+        $data = (new Menus()) -> getMenuTree(['type in (2,3)', 'status = 1']);
+        return $this->ajaxReturn(true, ['children' => $data]);
     }
 
 }
