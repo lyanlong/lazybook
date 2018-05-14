@@ -27,7 +27,8 @@ function setReporting($debug = false, $error_log){
 
 function autoload_class_file($class)
 {
-//    print_r($class);//Bootstrap\Core\Lazyrouter
+    $lastIndex = strrpos($class, DS);
+    $class = strtolower(substr($class, 0, $lastIndex + 1)). ucfirst(substr($class, $lastIndex + 1));
     $classFile = ROOT. DS. $class . '.' . SCRIPT_EXT;
     if (file_exists($classFile)) {
         require_once $classFile;

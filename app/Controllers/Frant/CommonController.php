@@ -5,7 +5,6 @@
 
 namespace App\Controllers\Frant;
 
-
 use Bootstrap\Core\LazyController;
 
 class CommonController extends LazyController

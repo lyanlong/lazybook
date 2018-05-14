@@ -51,8 +51,7 @@ class FSdk
         '/hhsy/api/' => 'sdk api',
         '/hhsy/center/' => 'center api',
     ];
-
-
+    
     public function init(array $fields)
     {
         $result = [];
